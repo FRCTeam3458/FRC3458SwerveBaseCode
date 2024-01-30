@@ -5,9 +5,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.commands.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 
 /**
@@ -19,6 +23,7 @@ import frc.robot.subsystems.swerve.rev.RevSwerve;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -27,9 +32,15 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
+    private final JoystickButton arm2Amp = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton arm2Speaker = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton intake = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
 
     /* Subsystems */
     private final RevSwerve s_Swerve = new RevSwerve();
+    private final Arm s_Arm = new Arm();
+    private final Climb s_Climb = new Climb();
+    private final Intake s_Intake = new Intake();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -57,6 +68,20 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
+        arm2Amp.onTrue(new InstantCommand(() -> s_Arm.armToAmpCommand()
+        .andThen(new WaitCommand(2))
+        .andThen(s_Intake.IntakeCommand())
+        ));
+
+        arm2Speaker.onTrue(new InstantCommand(() -> s_Arm.armToSpeakerCommand()
+        .andThen(s_Intake.Flywheel())
+        .andThen(new WaitCommand(2))
+        .andThen(s_Intake.Shoot())
+        ));
+        intake.onTrue(new InstantCommand(() -> s_Arm.armToPickupCommand()
+        .andThen(s_Intake.IntakeCommand())
+        ));
     }
 
     /**
