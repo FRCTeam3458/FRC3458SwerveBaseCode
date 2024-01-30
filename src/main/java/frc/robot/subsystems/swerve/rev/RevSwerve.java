@@ -9,13 +9,14 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -24,15 +25,13 @@ public class RevSwerve extends SubsystemBase {
 
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public Pigeon2 gyro;
+    public AHRS gyro;
 
 
 
     public RevSwerve() {
         
-        gyro = new Pigeon2(RevSwerveConstants.REV.pigeonID);
-        gyro.configFactoryDefault();
-        
+        gyro = new AHRS(SerialPort.Port.kMXP);        
      
 
         mSwerveMods = new SwerveModule[] {
@@ -124,7 +123,7 @@ public class RevSwerve extends SubsystemBase {
         if(RevSwerveConfig.invertGyro) {
             deg = -deg;
         }
-        gyro.setYaw(deg);
+        gyro.setAngleAdjustment(deg);
         swerveOdometry.update(getYaw(), getModulePositions());  
     }
 
