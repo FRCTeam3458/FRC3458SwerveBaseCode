@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Flywheels;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 
 /**
@@ -40,7 +42,8 @@ public class RobotContainer {
     private final RevSwerve s_Swerve = new RevSwerve();
     private final Arm s_Arm = new Arm();
     private final Climb s_Climb = new Climb();
-    private final Intake s_Intake = new Intake();
+    private final Rollers s_Rollers = new Rollers();
+    private final Flywheels s_Flywheels = new Flywheels();
 
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -54,6 +57,8 @@ public class RobotContainer {
                 () -> false
             )
         );
+        s_Rollers.setDefaultCommand(s_Flywheels.StopFlywheelsCommand());
+        
 
         // Configure the button bindings
         configureButtonBindings();
@@ -65,22 +70,25 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
+
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
+        /* Operator Buttons */
         arm2Amp.onTrue(new InstantCommand(() -> s_Arm.armToAmpCommand()
         .andThen(new WaitCommand(2))
-        .andThen(s_Intake.IntakeCommand())
+        .andThen(s_Rollers.IntakeCommand())
         ));
 
         arm2Speaker.onTrue(new InstantCommand(() -> s_Arm.armToSpeakerCommand()
-        .andThen(s_Intake.Flywheel())
+        .andThen(s_Flywheels.RunFlywheelsCommand())
         .andThen(new WaitCommand(2))
-        .andThen(s_Intake.Shoot())
+        .andThen(s_Rollers.ShootCommand())
         ));
+
         intake.onTrue(new InstantCommand(() -> s_Arm.armToPickupCommand()
-        .andThen(s_Intake.IntakeCommand())
+        .andThen(s_Rollers.IntakeCommand())
         ));
     }
 

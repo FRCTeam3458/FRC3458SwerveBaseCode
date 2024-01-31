@@ -11,12 +11,11 @@ import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Intake extends SubsystemBase {
+public class Flywheels extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
    private final CANSparkMax bottomRoller = new CANSparkMax(8, MotorType.kBrushless);
-   private final CANSparkMax upperRoller = new CANSparkMax(9, MotorType.kBrushless);
-   private final VictorSP doubleRoller = new VictorSP(10);
+   private final CANSparkMax upperRoller = new CANSparkMax(9, MotorType.kBrushless)
 
   /**
    * Example command factory method.
@@ -26,28 +25,14 @@ public class Intake extends SubsystemBase {
   public Command IntakeCommand() {
     return runOnce(() -> upperRoller.set(0.5))
           .andThen(run(() -> bottomRoller.set(-0.5)))
-          .andThen(run(() -> doubleRoller.set(0.5)))
           .withName("Intake"); 
   }
-
-  public Command Flywheel() {
+  public Command RunFlywheelsCommand() {
     return runOnce(() -> upperRoller.set(-1))
             .andThen(run(() -> bottomRoller.set(1)))
             .withName("Flywheel");
   }
-  public Command Shoot() {
-    return runOnce(() -> doubleRoller.set(-0.5))
-            .withName("Shoot");
-  }
-  public Command alignNote() {
-    return runOnce(() -> doubleRoller.set(0.5))
-            .withName("Align Note");
-  }
-  public Command StopDouble() {
-    return runOnce(() -> doubleRoller.set(0))
-            .withName("Stop Double Rollers");
-  }
-  public Command StopFlywheels() {
+  public Command StopFlywheelsCommand() {
     return runOnce(() -> upperRoller.set(0.0))
             .andThen(() -> bottomRoller.set(0.0))
             .withName("Stop Flywheels");
