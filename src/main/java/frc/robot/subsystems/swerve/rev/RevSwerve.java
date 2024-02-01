@@ -11,11 +11,17 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,10 +32,14 @@ public class RevSwerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
     public AHRS gyro;
+    public SwerveDrivePoseEstimator poseEstimator;
 
 
 
     public RevSwerve() {
+
+        var stateStdDevs = VecBuilder.fill(0.1, 0.1, 0.1);
+        var visionStdDevs = VecBuilder.fill(1, 1, 1);
         
         gyro = new AHRS(SerialPort.Port.kMXP);        
      
@@ -45,7 +55,16 @@ public class RevSwerve extends SubsystemBase {
         swerveOdometry = new SwerveDriveOdometry(RevSwerveConfig.swerveKinematics, getYaw(), getModulePositions());
         zeroGyro();
 
-    }
+        poseEstimator = 
+                new SwerveDrivePoseEstimator(
+                    RevSwerveConfig.swerveKinematics, 
+                    getYaw(), 
+                    getModulePositions(), 
+                    new Pose2d(), 
+                    stateStdDevs, 
+                    visionStdDevs);
+            }
+      
     private static ChassisSpeeds correctForDynamics(ChassisSpeeds originalSpeeds) {
         final double LOOP_TIME_S = 0.02;
         Pose2d futureRobotPose =
@@ -135,6 +154,37 @@ public class RevSwerve extends SubsystemBase {
         return (RevSwerveConfig.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
     }
 
+    public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+        poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+    }
+
+    public void addVisionMeasurement(
+        Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs){
+        poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+    }
+
+    public void resetPose(Pose2d pose, boolean resetSimPose){
+        if(resetSimPose) {
+            poseEstimator.resetPosition(getYaw(), getModulePositions(), pose);
+        }
+    }
+
+    public Pose2d getVisionPose() {
+        return poseEstimator.getEstimatedPosition();
+    }
+
+    public Rotation2d getHeading() {
+        return getPose().getRotation();
+    }
+
+    public Rotation2d getGyroYaw() {
+        return gyro.getRotation2d();
+    }
+
+    public ChassisSpeeds getChassisSpeeds() {
+        return RevSwerveConfig.swerveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
     @Override
     public void periodic() {
         for(SwerveModule mod : mSwerveMods) {
@@ -142,5 +192,7 @@ public class RevSwerve extends SubsystemBase {
             SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Integrated", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond);    
         }
+        poseEstimator.update(getYaw(), getModulePositions());
+    
     }
 }

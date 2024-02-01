@@ -1,12 +1,14 @@
 
 package frc.robot.subsystems.swerve.rev;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
+import frc.robot.Constants;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
@@ -25,13 +27,10 @@ public class RevSwerveModule implements SwerveModule
 {
     public int moduleNumber;
     private Rotation2d angleOffset;
-   // private Rotation2d lastAngle;
+    private Rotation2d lastAngle;
 
     private CANSparkMax mAngleMotor;
     private CANSparkMax mDriveMotor;
-
-
-
 
     private CANcoder angleEncoder;
     private RelativeEncoder relAngleEncoder;
@@ -60,7 +59,7 @@ public class RevSwerveModule implements SwerveModule
         configEncoders();
 
 
-       // lastAngle = getState().angle;
+       lastAngle = getState().angle;
     }
 
 
@@ -104,10 +103,7 @@ public class RevSwerveModule implements SwerveModule
         mAngleMotor.setSmartCurrentLimit(RevSwerveConfig.angleContinuousCurrentLimit);
        
         mAngleMotor.setInverted(RevSwerveConfig.angleMotorInvert);
-        //mAngleMotor.setIdleMode(RevSwerveConfig.angleIdleMode);
-
-        
-       
+        mAngleMotor.setIdleMode(RevSwerveConfig.angleIdleMode); 
     }
 
     private void configDriveMotor()
@@ -122,10 +118,6 @@ public class RevSwerveModule implements SwerveModule
         mDriveMotor.setSmartCurrentLimit(RevSwerveConfig.driveContinuousCurrentLimit);
         mDriveMotor.setInverted(RevSwerveConfig.driveMotorInvert);
         mDriveMotor.setIdleMode(RevSwerveConfig.driveIdleMode); 
-    
-       
-       
-       
     }
 
 
@@ -186,7 +178,6 @@ public class RevSwerveModule implements SwerveModule
        
         
         controller.setReference (degReference, ControlType.kPosition, 0);
-        
     }
 
    
@@ -215,12 +206,9 @@ public class RevSwerveModule implements SwerveModule
 
     private void resetToAbsolute()
     {
-    
         double absolutePosition =getCanCoder().getDegrees() - angleOffset.getDegrees();
         relAngleEncoder.setPosition(absolutePosition);
     }
-
-  
 
     public SwerveModuleState getState()
     {

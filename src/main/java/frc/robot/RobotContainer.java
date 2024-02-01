@@ -12,7 +12,6 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Flywheels;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 
@@ -57,7 +56,10 @@ public class RobotContainer {
                 () -> false
             )
         );
-        s_Rollers.setDefaultCommand(s_Flywheels.StopFlywheelsCommand());
+
+        s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheelsCommand());
+        s_Rollers.setDefaultCommand(s_Rollers.StopRollersCommand());
+
         
 
         // Configure the button bindings
@@ -78,6 +80,7 @@ public class RobotContainer {
         /* Operator Buttons */
         arm2Amp.onTrue(new InstantCommand(() -> s_Arm.armToAmpCommand()
         .andThen(new WaitCommand(2))
+        .andThen(s_Flywheels.IntakeCommand())
         .andThen(s_Rollers.IntakeCommand())
         ));
 
@@ -88,6 +91,7 @@ public class RobotContainer {
         ));
 
         intake.onTrue(new InstantCommand(() -> s_Arm.armToPickupCommand()
+        .andThen(s_Flywheels.IntakeCommand())
         .andThen(s_Rollers.IntakeCommand())
         ));
     }

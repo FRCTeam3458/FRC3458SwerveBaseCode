@@ -49,7 +49,7 @@ public class RevSwerveConfig
 
     // encoder setup
     // meters per rotation
-    public static final double driveRevToMeters =  wheelCircumference / (driveGearRatio );
+    public static final double driveRevToMeters =  wheelCircumference / (driveGearRatio);
     public static final double driveRpmToMetersPerSecond = driveRevToMeters/60 ;
     // the number of degrees that a single rotation of the turn motor turns the wheel.
     public static final double DegreesPerTurnRotation = 360/angleGearRatio;

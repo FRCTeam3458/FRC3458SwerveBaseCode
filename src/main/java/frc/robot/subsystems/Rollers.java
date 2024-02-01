@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,8 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Rollers extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
-   private final CANSparkMax bottomRoller = new CANSparkMax(8, MotorType.kBrushless);
-   private final CANSparkMax upperRoller = new CANSparkMax(9, MotorType.kBrushless);
    private final VictorSP doubleRoller = new VictorSP(10);
 
   /**
@@ -24,33 +19,23 @@ public class Rollers extends SubsystemBase {
    * @return a command
    */
   public Command IntakeCommand() {
-    return runOnce(() -> upperRoller.set(0.5))
-          .andThen(run(() -> bottomRoller.set(-0.5)))
-          .andThen(run(() -> doubleRoller.set(0.5)))
+    return runOnce(() -> doubleRoller.set(0.5))
           .withName("Intake"); 
   }
 
-  public Command Flywheel() {
-    return runOnce(() -> upperRoller.set(-1))
-            .andThen(run(() -> bottomRoller.set(1)))
-            .withName("Flywheel");
-  }
-  public Command Shoot() {
+  public Command ShootCommand() {
     return runOnce(() -> doubleRoller.set(-0.5))
             .withName("Shoot");
   }
+
   public Command alignNote() {
     return runOnce(() -> doubleRoller.set(0.5))
             .withName("Align Note");
   }
-  public Command StopDoubleCommand() {
+
+  public Command StopRollersCommand() {
     return runOnce(() -> doubleRoller.set(0))
             .withName("Stop Double Rollers");
-  }
-  public Command StopFlywheelsCommand() {
-    return runOnce(() -> upperRoller.set(0.0))
-            .andThen(() -> bottomRoller.set(0.0))
-            .withName("Stop Flywheels");
   }
 
   /**
