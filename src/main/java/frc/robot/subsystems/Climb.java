@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+
 //import com.ctre.phoenix6.motorcontrol.VictorSPXControlMode;
 //import com.ctre.phoenix6.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -15,7 +18,10 @@ public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Climb() {}
 
-  private final VictorSP climb = new VictorSP(11);//idk which id to use
+  //private final VictorSP climb = new VictorSP(11);//idk which id to use
+  private final TalonFX climb = new TalonFX(0);
+  private final DigitalInput climbRetractLimiter = new DigitalInput(1);
+  private final DigitalInput climbExtendLimiter = new DigitalInput(2);
 
 public Command Extend() {
     return runOnce(() -> climb.set(1))
@@ -30,6 +36,14 @@ public Command Extend() {
   public Command StopClimb() {
     return runOnce(() -> climb.set(0))
     .withName("Stop Climb");
+  }
+
+  public boolean getClimbRetractLimiter(){
+    return climbRetractLimiter.get();
+  }
+
+  public boolean getClimbExtendLimiter(){
+    return climbExtendLimiter.get();
   }
 
   /**

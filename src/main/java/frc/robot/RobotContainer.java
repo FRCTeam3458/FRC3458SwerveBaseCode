@@ -59,6 +59,7 @@ public class RobotContainer {
 
         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheelsCommand());
         s_Rollers.setDefaultCommand(s_Rollers.StopRollersCommand());
+        s_Climb.setDefaultCommand(s_Climb.StopClimb());
 
         
 
