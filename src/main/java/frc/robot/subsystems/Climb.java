@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -44,6 +46,11 @@ public Command Extend() {
 
   public boolean getClimbExtendLimiter(){
     return climbExtendLimiter.get();
+  }
+
+  public Command moveClimbCommand(int speed){
+    return run(() -> climb.set(speed))
+    .withName("Move Climb");
   }
 
   /**

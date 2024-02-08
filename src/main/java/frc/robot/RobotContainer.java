@@ -30,6 +30,7 @@ public class RobotContainer {
     private final int translationAxis = XboxController.Axis.kLeftY.value;
     private final int strafeAxis = XboxController.Axis.kLeftX.value;
     private final int rotationAxis = XboxController.Axis.kRightX.value;
+    private final double operatorPOV = operator.getRawAxis(4);
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
@@ -59,8 +60,6 @@ public class RobotContainer {
 
         s_Flywheels.setDefaultCommand(s_Flywheels.StopFlywheelsCommand());
         s_Rollers.setDefaultCommand(s_Rollers.StopRollersCommand());
-        s_Climb.setDefaultCommand(s_Climb.StopClimb());
-
         
 
         // Configure the button bindings
