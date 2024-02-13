@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 //import com.ctre.phoenix6.motorcontrol.VictorSPXControlMode;
 //import com.ctre.phoenix6.motorcontrol.can.VictorSPX;
@@ -21,7 +22,7 @@ public class Climb extends SubsystemBase {
   public Climb() {}
 
   //private final VictorSP climb = new VictorSP(11);//idk which id to use
-  private final TalonFX climb = new TalonFX(0);
+  private final VictorSP climb = new VictorSP(12);
   private final DigitalInput climbRetractLimiter = new DigitalInput(1);
   private final DigitalInput climbExtendLimiter = new DigitalInput(2);
 

@@ -56,9 +56,17 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     LogManager.log();
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("<tv>").getDouble(0);
-    NetworkTableEntry pose = NetworkTableInstance.getDefault().getEntry("botpose");
+    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("<tv>").getDouble(0);
+    //NetworkTableEntry pose = NetworkTableInstance.getDefault().getEntry("botpose");
+    //Pose2d VisionPose = NetworkTableInstance.getDefault().getEntry("botpose");
     //Pose2d visionPoses = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose");
+
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    double x = tx.getDouble(0.0);
+    NetworkTableEntry botpose = table.getEntry("botpose");
+    Pose2d robotPose = botpose.toPose2d();
+    
 
 
     //RevSwerve.addVisionMeasurement(pose, Timer.getFPGATimestamp());

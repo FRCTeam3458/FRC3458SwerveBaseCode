@@ -16,7 +16,7 @@ public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Arm() {}
 
-  private final VictorSP armMotor = new VictorSP(12);
+  private final VictorSP armMotor = new VictorSP(13);
 
   private final Encoder armEncoder = new Encoder(1, 2);
   private final PIDController armController = new PIDController(1.0, 0.0, 0,0);

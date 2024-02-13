@@ -13,8 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Flywheels extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   
-   private final CANSparkMax bottomRoller = new CANSparkMax(8, MotorType.kBrushless);
-   private final CANSparkMax upperRoller = new CANSparkMax(9, MotorType.kBrushless);
+   private final CANSparkMax bottomRoller = new CANSparkMax(9, MotorType.kBrushless);
+   private final CANSparkMax upperRoller = new CANSparkMax(10, MotorType.kBrushless);
 
   /**
    * Example command factory method.
