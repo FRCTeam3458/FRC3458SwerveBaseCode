@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tx = table.getEntry("tx");
     double x = tx.getDouble(0.0);
     NetworkTableEntry botpose = table.getEntry("botpose");
-    Pose2d robotPose = botpose.toPose2d();
+    //Pose2d robotPose = botpose.toPose2d();
     
 
 

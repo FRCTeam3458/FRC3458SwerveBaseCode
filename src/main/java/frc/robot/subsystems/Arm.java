@@ -9,14 +9,15 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Arm() {}
-
-  private final VictorSP armMotor = new VictorSP(13);
+ 
+  private final VictorSP armMotor = new VictorSP(12);
 
   private final Encoder armEncoder = new Encoder(1, 2);
   private final PIDController armController = new PIDController(1.0, 0.0, 0,0);
@@ -29,19 +30,19 @@ public class Arm extends SubsystemBase {
    */
   public Command armToAmpCommand() {
     return runOnce(() -> 
-      armMotor.set(armController.calculate(armEncoder.getDistance(), 20) + armForward.calculate(20, 0)))
+      armMotor.set(armController.calculate(armEncoder.getDistance(), 0)))
           .withName("Arm to Amp");
         }
     
   public Command armToSpeakerCommand() {
       return runOnce(() -> 
-        armMotor.set(armController.calculate(armEncoder.getDistance(), 40) + armForward.calculate(40, 0)))
+        armMotor.set(armController.calculate(armEncoder.getDistance(), 0.4)))
             .withName("Arm to Speaker");
         }
 
   public Command armToPickupCommand() {
         return runOnce(() -> 
-          armMotor.set(armController.calculate(armEncoder.getDistance(), 80) + armForward.calculate(80, 0)))
+          armMotor.set(armController.calculate(armEncoder.getDistance(), 0.8)))
               .withName("Arm to Pickup");
         }
 
@@ -58,6 +59,9 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Arm to pickup", armToPickupCommand());
+    SmartDashboard.putData("Arm to amp", armToAmpCommand());
+    SmartDashboard.putData("Arm to Speaker", armToSpeakerCommand());
   }
 
   @Override

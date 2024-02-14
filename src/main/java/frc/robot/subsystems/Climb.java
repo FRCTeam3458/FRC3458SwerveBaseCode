@@ -10,6 +10,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //import com.ctre.phoenix6.motorcontrol.VictorSPXControlMode;
 //import com.ctre.phoenix6.motorcontrol.can.VictorSPX;
@@ -81,6 +82,9 @@ public Command Extend() {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Raise Climb", Extend());
+    SmartDashboard.putData("Lower Climb", Retract());
+    SmartDashboard.putData("Stop Climb", StopClimb());
   }
 
   @Override
