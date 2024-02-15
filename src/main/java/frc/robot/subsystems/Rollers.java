@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Rollers extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
-   private final VictorSP doubleRoller = new VictorSP(11);
+   private final Victor doubleRoller = new Victor(16);
 
   /**
    * Example command factory method.

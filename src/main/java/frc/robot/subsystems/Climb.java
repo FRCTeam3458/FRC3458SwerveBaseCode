@@ -23,9 +23,9 @@ public class Climb extends SubsystemBase {
   public Climb() {}
 
   //private final VictorSP climb = new VictorSP(11);//idk which id to use
-  private final VictorSP climb = new VictorSP(12);
-  private final DigitalInput climbRetractLimiter = new DigitalInput(1);
-  private final DigitalInput climbExtendLimiter = new DigitalInput(2);
+  private final VictorSP climb = new VictorSP(7);
+  private final DigitalInput climbRetractLimiter = new DigitalInput(3);
+  private final DigitalInput climbExtendLimiter = new DigitalInput(4);
 
 public Command Extend() {
     return runOnce(() -> climb.set(1))

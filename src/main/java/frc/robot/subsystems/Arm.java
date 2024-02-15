@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Encoder;
@@ -17,11 +20,11 @@ public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Arm() {}
  
-  private final VictorSP armMotor = new VictorSP(12);
+  private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
 
   private final Encoder armEncoder = new Encoder(1, 2);
-  private final PIDController armController = new PIDController(1.0, 0.0, 0,0);
-  private final ArmFeedforward armForward = new ArmFeedforward(0, 0, 0);
+  private final PIDController armController = new PIDController(1.0, 0.1, 0.1);
+  //private final ArmFeedforward armForward = new ArmFeedforward(0, 0, 0);
 
   /**
    * Example command factory method.
