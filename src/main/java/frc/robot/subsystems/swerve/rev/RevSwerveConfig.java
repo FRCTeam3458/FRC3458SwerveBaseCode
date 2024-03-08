@@ -1,8 +1,6 @@
 package frc.robot.subsystems.swerve.rev;
 
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-//import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-//import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -23,14 +21,14 @@ public class RevSwerveConfig
     public static final double anglePower = .9;
 
 
-    public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
+    public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
 
     public static final COTSFalconSwerveConstants chosenModule =  
-        COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
+        COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L1);
 
     /* Drivetrain Constants */
-    public static final double trackWidth = Units.inchesToMeters(23.75); 
-    public static final double wheelBase = Units.inchesToMeters(23.75); 
+    public static final double trackWidth = Units.inchesToMeters(19.125); 
+    public static final double wheelBase = Units.inchesToMeters(30.0); 
     public static final double wheelCircumference = chosenModule.wheelCircumference;
 
 
@@ -49,7 +47,7 @@ public class RevSwerveConfig
 
     // encoder setup
     // meters per rotation
-    public static final double driveRevToMeters =  wheelCircumference / (driveGearRatio);
+    public static final double driveRevToMeters =  wheelCircumference / (driveGearRatio );
     public static final double driveRpmToMetersPerSecond = driveRevToMeters/60 ;
     // the number of degrees that a single rotation of the turn motor turns the wheel.
     public static final double DegreesPerTurnRotation = 360/angleGearRatio;
@@ -110,10 +108,5 @@ public class RevSwerveConfig
     public RevSwerveConfig()
     {
         canCoderConfig = new CANcoderConfiguration();
-        //canCoderConfig.AbsoluteSensorRangeValue = AbsoluteSensorRangeValue.Unsigned_0To1;
-        //canCoderConfig.SensorDirection = canCoderInvert;
-        //canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        //canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
     }
 }
-
