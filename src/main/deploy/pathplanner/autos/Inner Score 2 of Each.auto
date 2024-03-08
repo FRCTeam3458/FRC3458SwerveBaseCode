@@ -1,0 +1,145 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Initial"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Grab 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToAmp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Score 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreAmp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Score & Intake 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Score 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Grab 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Inner Score 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armFloat"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
