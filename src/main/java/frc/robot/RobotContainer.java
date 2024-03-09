@@ -60,7 +60,7 @@ public class RobotContainer {
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
     private final JoystickButton noteAlign = new JoystickButton(driver, 2);
     private final JoystickButton speakerAlign = new JoystickButton(driver, 3);
-    private final JoystickButton temp4 = new JoystickButton(driver, 4);
+    private final JoystickButton pathToAmp = new JoystickButton(driver, 4);
 
     private final POVButton povUp = new POVButton(operator, 0);
     private final POVButton povDown = new POVButton(operator, 180);
@@ -75,6 +75,7 @@ public class RobotContainer {
     /* PIDs */
     private final PIDController speakerAlignLR = new PIDController(1.0, 0.0, 0.03);
     private final PIDController noteAlignLR = new PIDController(1.2, 0.7, 0.1);
+    private double driveForwardVal = -0.2;
 
     /* Autonomous */
 
@@ -137,29 +138,58 @@ public class RobotContainer {
         intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intakePOS.onFalse(s_Arm.StopArm()); 
 
-        speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+     /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
         () -> driver.getRawAxis(strafeAxis), 
         () -> speakerAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.01, 
         () -> false
-        ));
+        )); */
 
         if(noteAlign.getAsBoolean()){
-        LimelightHelpers.setPipelineIndex("limelight", 1);
-    }
+            LimelightHelpers.setPipelineIndex("limelight", 1);}
+        else{
+            LimelightHelpers.setPipelineIndex("limelilght", 0);}
+    
+    /*     if(s_Flywheels.getSensor()){
+                driveForwardVal = -0.2;
+            }
+        else if(!s_Flywheels.getSensor()) {
+            driveForwardVal = 0.0;
+        }   */
+
     noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
-        () -> -0.2, 
+        () -> driveForwardVal, 
         () -> driver.getRawAxis(strafeAxis), 
         () -> noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
         () -> true
         )
     );
+/* 
+    pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
+        new Pose2d(1.80, 7.60, Rotation2d.fromDegrees(-90)), 
+        new PathConstraints(
+          4.0, 4.0, 
+          Units.degreesToRadians(360), Units.degreesToRadians(540)
+        ), 
+        0, 
+        2.0
+      ));
+
+    speakerAlign.whileTrue(AutoBuilder.pathfindToPose(
+        new Pose2d(1.45, 5.60, Rotation2d.fromDegrees(180)), 
+        new PathConstraints(
+          4.0, 4.0, 
+          Units.degreesToRadians(360), Units.degreesToRadians(540)
+        ), 
+        0, 
+        2.0
+      )); */
 
         noteAlign.whileTrue(s_Flywheels.IntakeCommand());
        // intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
        
         noteAlign.and(
-            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand())
+            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand()))
         );
 
     }
