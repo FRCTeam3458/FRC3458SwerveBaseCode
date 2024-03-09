@@ -4,17 +4,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.loggingUtil.LogManager;
-import frc.robot.subsystems.swerve.rev.RevSwerve;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -56,21 +49,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     LogManager.log();
-    //NetworkTableInstance.getDefault().getTable("limelight").getEntry("<tv>").getDouble(0);
-    //NetworkTableEntry pose = NetworkTableInstance.getDefault().getEntry("botpose");
-    //Pose2d VisionPose = NetworkTableInstance.getDefault().getEntry("botpose");
-    //Pose2d visionPoses = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose");
-
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    double x = tx.getDouble(0.0);
-    NetworkTableEntry botpose = table.getEntry("botpose");
-    //Pose2d robotPose = botpose.toPose2d();
-    
-
-
-    //RevSwerve.addVisionMeasurement(pose, Timer.getFPGATimestamp());
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -83,6 +61,13 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+
+  /*   m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+
+    // schedule the autonomous command (example)
+     if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    } */
 
   }
 

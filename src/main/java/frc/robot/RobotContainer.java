@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -78,7 +79,7 @@ public class RobotContainer {
     private double driveForwardVal = -0.2;
 
     /* Autonomous */
-
+   // private final SendableChooser<Command> autoChooser;
 
 
 
@@ -109,6 +110,29 @@ public class RobotContainer {
          noteAlignLR.setTolerance(0.1);
         // Configure the button bindings
         configureButtonBindings();
+
+/* 
+
+        NamedCommands.registerCommand("scoreSpeaker", s_Flywheels.RunFlywheels()
+            .alongWith(new WaitCommand(1)).andThen(s_Rollers.Shoot())
+            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand()
+            .alongWith(s_Rollers.IntakeCommand())
+            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand()
+            .alongWith(new WaitCommand(2).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("scoreAmp", s_Rollers.IntakeCommand()
+            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1()
+            .alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand()
+            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
+
+        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+        SmartDashboard.putData("Auto Mode", autoChooser); 
+        
+        */
 
 
     }
@@ -211,5 +235,9 @@ public class RobotContainer {
      *
      * @return the command to run in autonomous
      */
+
+/*     public Command getAutonomousCommand() {
+        return autoChooser.getSelected();
+      } */
     
 }

@@ -6,6 +6,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "score1close"
@@ -15,6 +21,12 @@
           "type": "named",
           "data": {
             "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -30,6 +42,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "ScoreMiddle 1"
@@ -39,6 +57,12 @@
           "type": "named",
           "data": {
             "name": "scoreSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -54,33 +78,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "raiseArmToSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "score middle 2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "scoreSpeaker"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Three"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "score middle 3"
           }
         },
         {
