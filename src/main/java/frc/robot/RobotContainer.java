@@ -149,10 +149,11 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
-    
+        runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
+        runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot().withTimeout(1)))));
 
-        ampScore.whileTrue(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1.7).andThen(s_Rollers.IntakeCommand()))));
+        ampScore.whileTrue(s_Arm.armToAmpCommand());
+        ampScore.onFalse(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand().withTimeout(1))));
 
         povUp.whileTrue(s_Climb.Extend());
        
