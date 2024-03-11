@@ -150,17 +150,20 @@ public class RobotContainer {
         /* Operator Buttons */
 
         runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
-        runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot().withTimeout(1)))));
+        /* Shoots the note and then stops all things */
+        runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot()
+            .alongWith(new WaitCommand(0.7).andThen(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels().alongWith(s_Arm.StopArm()))))))));
 
         ampScore.whileTrue(s_Arm.armToAmpCommand());
-        ampScore.onFalse(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand().withTimeout(1))));
+        ampScore.onFalse(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()
+            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble().alongWith(s_Arm.StopArm()))))));
 
         povUp.whileTrue(s_Climb.Extend());
-       
-
         povDown.whileTrue(s_Climb.Retract());
 
-        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
+
+        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()
+            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm()))));
         intakePOS.onFalse(s_Arm.StopArm()); 
 
      /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
@@ -175,12 +178,13 @@ public class RobotContainer {
         else{
             LimelightHelpers.setPipelineIndex("limelilght", 0);}
     
-    /*     if(s_Flywheels.getSensor()){
+            
+        if(s_Flywheels.getSensor()){
                 driveForwardVal = -0.2;
             }
         else if(!s_Flywheels.getSensor()) {
             driveForwardVal = 0.0;
-        }   */
+        }   
 
     noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driveForwardVal, 
