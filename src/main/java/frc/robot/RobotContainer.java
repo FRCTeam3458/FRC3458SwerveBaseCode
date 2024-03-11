@@ -108,6 +108,7 @@ public class RobotContainer {
          
          speakerAlignLR.setTolerance(0.5);
          noteAlignLR.setTolerance(0.1);
+         
         // Configure the button bindings
         configureButtonBindings();
 
@@ -231,18 +232,6 @@ public class RobotContainer {
             s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand())));
 
     }
-
-   //public class DriveSubsystem extends SubsystemBase {
-  //public DriveSubsystem() {
-    // All other subsystem initialization
-    // ...
-
-    // Configure AutoBuilder last
-    
-  //}
-//}
-
-
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
