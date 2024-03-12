@@ -38,13 +38,13 @@ public class Arm extends SubsystemBase {
  
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.75)))
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87)))
           .withName("Arm to Amp");
         }
     
   public Command armToSpeakerCommand() {
       return run(() -> 
-        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.71
+        armMotor.set(armController.calculate(armEncoder.getPosition(), -0.89
          )))
           .withTimeout(2)
             .withName("Arm to Speaker");

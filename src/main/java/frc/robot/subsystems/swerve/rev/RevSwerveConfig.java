@@ -55,7 +55,7 @@ public class RevSwerveConfig
     
     /* Motor Inverts */
     public static final boolean angleMotorInvert = chosenModule.angleMotorInvert;
-    public static final boolean driveMotorInvert = chosenModule.driveMotorInvert;
+    public static final boolean driveMotorInvert = true;
 
     /* Angle Encoder Invert */
     public static final boolean canCoderInvert = chosenModule.canCoderInvert;

@@ -27,7 +27,7 @@ public class Rollers extends SubsystemBase {
    */
  // public final Trigger hasNote2 = new Trigger(noteSensor2::get);
   public Command IntakeCommand() {
-    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0.7))
+    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0.7))
           .withName("Intake Rollers"); 
   }
   public Command Shoot() {
@@ -39,7 +39,7 @@ public class Rollers extends SubsystemBase {
             .withName("Align Note");
   }
   public Command StopDouble() {
-    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0))
             .withName("Stop Double Rollers");
   }
   public Command setRollerSpeed(double speed) {

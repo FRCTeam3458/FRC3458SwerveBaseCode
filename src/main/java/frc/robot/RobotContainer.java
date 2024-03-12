@@ -9,6 +9,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.proto.System;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -79,7 +80,7 @@ public class RobotContainer {
     private double driveForwardVal = -0.2;
 
     /* Autonomous */
-   private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
 
 
@@ -94,9 +95,9 @@ public class RobotContainer {
           s_Swerve.setDefaultCommand(
             new TeleopSwerve(
                 s_Swerve, 
-                () -> driver.getRawAxis(translationAxis) * 0.3, 
-                () -> driver.getRawAxis(strafeAxis) * 0.3, 
-                () -> driver.getRawAxis(2) * 0.3, 
+                () -> -driver.getRawAxis(translationAxis), 
+                () -> -driver.getRawAxis(strafeAxis), 
+                () -> driver.getRawAxis(2), 
                 () -> false
             )
         ); 
@@ -108,35 +109,27 @@ public class RobotContainer {
          
          speakerAlignLR.setTolerance(0.5);
          noteAlignLR.setTolerance(0.1);
-         
         // Configure the button bindings
         configureButtonBindings();
 
+/* 
 
-
-        NamedCommands.registerCommand("scoreSpeaker", new SequentialCommandGroup (s_Flywheels.RunFlywheels()
+        NamedCommands.registerCommand("scoreSpeaker", s_Flywheels.RunFlywheels()
             .alongWith(new WaitCommand(1)).andThen(s_Rollers.Shoot())
-            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble()))));
-    
-        NamedCommands.registerCommand("intake", new SequentialCommandGroup (s_Flywheels.IntakeCommand()
+            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand()
             .alongWith(s_Rollers.IntakeCommand())
-            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble()))));
-
-        NamedCommands.registerCommand("raiseArmToAmp", new SequentialCommandGroup (s_Arm.armToAmpCommand()
-            .alongWith(new WaitCommand(2).andThen(s_Arm.StopArm()))));
-
-        NamedCommands.registerCommand("scoreAmp", new SequentialCommandGroup (s_Rollers.IntakeCommand()
-            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble()))));
-
-        NamedCommands.registerCommand("armToIntakePose", new SequentialCommandGroup (s_Arm.armToIntakeCommand1()
-            .alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm()))));
-
-        NamedCommands.registerCommand("raiseArmToSpeaker", new SequentialCommandGroup (s_Arm.armToSpeakerCommand()
-            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm()))));
-
-        NamedCommands.registerCommand("armFloat", new InstantCommand(()-> s_Arm.armFloatingCommand()));
-
-
+            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand()
+            .alongWith(new WaitCommand(2).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("scoreAmp", s_Rollers.IntakeCommand()
+            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble())));
+        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1()
+            .alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand()
+            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
+*/
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser); 
         
@@ -157,21 +150,32 @@ public class RobotContainer {
 
         /* Operator Buttons */
 
-        runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
-        /* Shoots the note and then stops all things */
+        //runFlywheel.whileTrue(new SequentialCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
+       // runFlywheel.onFalse(new SequentialCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot().withTimeout(1)))));
+        
+       
+
+       
+       ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.IntakeCommand()))));
+      // ampScore.whileTrue(s_Arm.armToAmpCommand());
+      // ampScore.onFalse((s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Rollers.StopDouble())));
+        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
+      /*   runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
+        /* Shoots the note and then stops all things 
         runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot()
             .alongWith(new WaitCommand(0.7).andThen(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels().alongWith(s_Arm.StopArm()))))))));
+
 
         ampScore.whileTrue(s_Arm.armToAmpCommand());
         ampScore.onFalse(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()
             .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble().alongWith(s_Arm.StopArm()))))));
-
+*/
         povUp.whileTrue(s_Climb.Extend());
+       
+
         povDown.whileTrue(s_Climb.Retract());
 
-
-        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()
-            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm()))));
+        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
         intakePOS.onFalse(s_Arm.StopArm()); 
 
      /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
@@ -186,13 +190,12 @@ public class RobotContainer {
         else{
             LimelightHelpers.setPipelineIndex("limelilght", 0);}
     
-
-        if(s_Flywheels.getSensor()){
+    /*     if(s_Flywheels.getSensor()){
                 driveForwardVal = -0.2;
             }
         else if(!s_Flywheels.getSensor()) {
             driveForwardVal = 0.0;
-        }   
+        }   */
 
     noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driveForwardVal, 
@@ -222,16 +225,26 @@ public class RobotContainer {
         2.0
       )); 
 
-        
-        intake.whileTrue(s_Flywheels.IntakeCommand());
-        intake.and(
-            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand()))); 
-
         noteAlign.whileTrue(s_Flywheels.IntakeCommand());
+       // intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+       
         noteAlign.and(
-            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand())));
+            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand()))
+        );
 
     }
+
+   //public class DriveSubsystem extends SubsystemBase {
+  //public DriveSubsystem() {
+    // All other subsystem initialization
+    // ...
+
+    // Configure AutoBuilder last
+    
+  //}
+//}
+
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
