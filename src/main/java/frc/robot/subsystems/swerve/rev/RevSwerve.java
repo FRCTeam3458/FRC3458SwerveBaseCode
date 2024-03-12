@@ -211,8 +211,8 @@ public class RevSwerve extends SubsystemBase {
         return botPose.getEstimatedPosition();
     }
 
-    public SwerveDrivePoseEstimator resetPose() {
-        botPose.resetPosition(getYaw(), getModulePositions(), getPose());
+    public SwerveDrivePoseEstimator resetPose(Pose2d pose) {
+        botPose.resetPosition(getYaw(), getModulePositions(), pose);
         return botPose;
     }
     
@@ -230,7 +230,6 @@ public class RevSwerve extends SubsystemBase {
         SmartDashboard.putData("Field", m_field);
         //m_field.setRobotPose(swerveOdometry.getPoseMeters());
         m_field.setRobotPose(getPose());
-
     }
 
     

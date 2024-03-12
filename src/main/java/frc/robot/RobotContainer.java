@@ -2,6 +2,8 @@ package frc.robot;
 
 
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.path.PathConstraints;
@@ -11,6 +13,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.proto.System;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -81,9 +85,14 @@ public class RobotContainer {
 
     /* Autonomous */
     private final SendableChooser<Command> autoChooser;
+    
+    Optional<Alliance> ally = DriverStation.getAlliance();
+
+    private Pose2d startingPose;
 
 
 
+        
   
 
   
@@ -112,6 +121,8 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
+        
+
 /* 
 
         NamedCommands.registerCommand("scoreSpeaker", s_Flywheels.RunFlywheels()
@@ -134,6 +145,35 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser); 
         
         
+
+        if(ally.get() == Alliance.Blue){
+            if(autoChooser.getSelected().toString().equals("3Goofy")){
+                final Pose2d startPose = new Pose2d(0.54, 2.00, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+           else if(autoChooser.getSelected().toString().equals("Inner Score 2 of Each")){
+                final Pose2d startPose = new Pose2d(0.54, 7.00, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+            else if(autoChooser.getSelected().toString().equals("2p amp 1p speaker")){
+                final Pose2d startPose = new Pose2d(0.54, 6.93, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+        }
+        else if(ally.get() == Alliance.Red){
+            if(autoChooser.getSelected().toString().equals("3Goofy")){
+                final Pose2d startPose = new Pose2d(16.00, 2.00, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+            else if(autoChooser.getSelected().toString().equals("Inner Score 2 of Each")){
+                final Pose2d startPose = new Pose2d(16.00, 7.00, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+            else if(autoChooser.getSelected().toString().equals("2p amp 1p speaker")){
+                final Pose2d startPose = new Pose2d(16.00, 6.93, s_Swerve.getYaw());
+                startingPose = startPose;
+            }
+        } 
 
 
     }
@@ -252,8 +292,13 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
 
+
      public Command getAutonomousCommand() {
         return autoChooser.getSelected();
       } 
-    
+ 
+      public void setStartingPose() {
+        s_Swerve.resetPose(startingPose);
+        s_Swerve.resetOdometry(startingPose);
+    } 
 }
