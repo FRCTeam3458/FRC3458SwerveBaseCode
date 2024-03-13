@@ -5,15 +5,12 @@
 package frc.robot.commands;
 
 import frc.robot.LimelightHelpers;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Flywheels;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 
-import java.util.function.DoubleSupplier;
-
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 public class IntakeCommand extends Command {
@@ -22,6 +19,7 @@ public class IntakeCommand extends Command {
   private final Rollers m_Rollers;
   private final RevSwerve m_Drive;
   private Double NoteGrab = 0.2;
+  private final PIDController noteAlignLR = new PIDController(1.2, 0.7, 0.1);
 
   /**
    * Creates a new ExampleCommand.
@@ -57,17 +55,22 @@ public class IntakeCommand extends Command {
       NoteGrab = 0.2;
       m_Rollers.IntakeCommand();
     }
+
     new TeleopSwerve(m_Drive, 
-      ()-> NoteGrab, 
-      ()->0.0, 
+      ()-> -NoteGrab, 
+      ()-> -noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
       ()->0.0, 
       ()->true);
+
+  /* While no note-drive forward, run flywheels. 
+   * While note-run flywheels, run rollers, arm to float
+   */
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Rollers.Shoot().alongWith(new WaitCommand(0.7).andThen(m_Flywheels.StopFlywheels().alongWith(m_Rollers.StopDouble())));
+    
   }
 
   // Returns true when the command should end.

@@ -47,7 +47,7 @@ public class ScoreSpeaker extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Rollers.Shoot().alongWith(new WaitCommand(0.7).andThen(m_Flywheels.StopFlywheels()));
+    m_Rollers.Shoot().alongWith(new WaitCommand(0.7).andThen(m_Flywheels.StopFlywheels().alongWith(m_Rollers.StopDouble())));
     m_Arm.StopArm();
   }
 
