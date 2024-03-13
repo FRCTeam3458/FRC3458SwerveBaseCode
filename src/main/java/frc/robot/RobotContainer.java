@@ -123,25 +123,14 @@ public class RobotContainer {
         configureButtonBindings();
 
         
-
-/* 
-
-        NamedCommands.registerCommand("scoreSpeaker", s_Flywheels.RunFlywheels()
-            .alongWith(new WaitCommand(1)).andThen(s_Rollers.Shoot())
-            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
-        NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand()
-            .alongWith(s_Rollers.IntakeCommand())
-            .alongWith(new WaitCommand(0.7).andThen(s_Flywheels.StopFlywheels()).alongWith(s_Rollers.StopDouble())));
-        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand()
-            .alongWith(new WaitCommand(2).andThen(s_Arm.StopArm())));
-        NamedCommands.registerCommand("scoreAmp", s_Rollers.IntakeCommand()
-            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble())));
-        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1()
-            .alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm())));
-        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand()
-            .alongWith(new WaitCommand(1).andThen(s_Arm.StopArm())));
+        NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
+        NamedCommands.registerCommand("intake", new IntakeCommand(s_Flywheels, s_Swerve, s_Rollers));
+        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand());
+        NamedCommands.registerCommand("scoreAmp", new ScoreAmp(s_Arm, s_Rollers).withTimeout(1));
+        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(0.7)).andThen(s_Arm.StopArm()));
+        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
         NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
-*/
+
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
 

@@ -62,8 +62,8 @@ public class IntakeCommand extends Command {
       ()->0.0, 
       ()->true);
 
-  /* While no note-drive forward, run flywheels. 
-   * While note-run flywheels, run rollers, arm to float
+  /* While no note- drive forward, run flywheels. 
+   * While note- run flywheels, run rollers, arm to float
    */
   }
 
