@@ -30,6 +30,10 @@ public class Rollers extends SubsystemBase {
     return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0.7))
           .withName("Intake Rollers"); 
   }
+  public Command ScoreAmp(){
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1))
+          .withName("Score Amp");
+  }
   public Command Shoot() {
     return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, -1))
             .withName("Shoot");

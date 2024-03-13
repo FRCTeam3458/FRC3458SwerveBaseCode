@@ -163,10 +163,10 @@ public class RobotContainer {
        
 
        
-       ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.IntakeCommand()))));
+       ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
       // ampScore.whileTrue(s_Arm.armToAmpCommand());
       // ampScore.onFalse((s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Rollers.StopDouble())));
-        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(2).andThen(s_Rollers.Shoot())))));
+        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
       /*   runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
         /* Shoots the note and then stops all things 
         runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot()
