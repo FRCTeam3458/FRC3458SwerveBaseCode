@@ -28,7 +28,10 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.*;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.ScoreAmp;
+import frc.robot.commands.ScoreSpeaker;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
 import frc.robot.subsystems.Arm;
@@ -161,13 +164,21 @@ public class RobotContainer {
        // runFlywheel.onFalse(new SequentialCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot().withTimeout(1)))));
         
        
+       runFlywheel.whileTrue(new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers));
+       ampScore.whileTrue(new ScoreAmp(s_Arm, s_Rollers));
 
-       
-       ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
-      // ampScore.whileTrue(s_Arm.armToAmpCommand());
+
+       //ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
+      
+      
+       // ampScore.whileTrue(s_Arm.armToAmpCommand());
       // ampScore.onFalse((s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Rollers.StopDouble())));
-        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
-      /*   runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
+       
+
+      //****  runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
+      
+
+       /*   runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
         /* Shoots the note and then stops all things 
         runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot()
             .alongWith(new WaitCommand(0.7).andThen(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels().alongWith(s_Arm.StopArm()))))))));
@@ -192,10 +203,10 @@ public class RobotContainer {
         () -> false
         )); */
 
-        if(noteAlign.getAsBoolean()){
+  /*       if(noteAlign.getAsBoolean()){
             LimelightHelpers.setPipelineIndex("limelight", 1);}
         else{
-            LimelightHelpers.setPipelineIndex("limelilght", 0);}
+            LimelightHelpers.setPipelineIndex("limelilght", 0);} */
     
     /*     if(s_Flywheels.getSensor()){
                 driveForwardVal = -0.2;
@@ -204,13 +215,13 @@ public class RobotContainer {
             driveForwardVal = 0.0;
         }   */
 
-    noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+ /*    noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driveForwardVal, 
         () -> driver.getRawAxis(strafeAxis), 
         () -> noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
         () -> true
         )
-    );
+    ); */
 
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
         new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
@@ -232,12 +243,10 @@ public class RobotContainer {
         2.0
       )); 
 
-        noteAlign.whileTrue(s_Flywheels.IntakeCommand());
-       // intake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
-       
-        noteAlign.and(
-            s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand()))
-        );
+    //    noteAlign.whileTrue(s_Flywheels.IntakeCommand());
+    //    noteAlign.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand())));
+
+   noteAlign.whileTrue(new IntakeCommand(s_Flywheels, s_Swerve, s_Rollers));
 
     }
 
