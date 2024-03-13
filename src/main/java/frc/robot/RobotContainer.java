@@ -88,8 +88,6 @@ public class RobotContainer {
     
     Optional<Alliance> ally = DriverStation.getAlliance();
 
-    private Pose2d startingPose;
-
 
 
         
@@ -142,38 +140,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
 */
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-        SmartDashboard.putData("Auto Mode", autoChooser); 
-        
-        
-
-        if(ally.get() == Alliance.Blue){
-            if(autoChooser.getSelected().toString().equals("3Goofy")){
-                final Pose2d startPose = new Pose2d(0.54, 2.00, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-           else if(autoChooser.getSelected().toString().equals("Inner Score 2 of Each")){
-                final Pose2d startPose = new Pose2d(0.54, 7.00, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-            else if(autoChooser.getSelected().toString().equals("2p amp 1p speaker")){
-                final Pose2d startPose = new Pose2d(0.54, 6.93, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-        }
-        else if(ally.get() == Alliance.Red){
-            if(autoChooser.getSelected().toString().equals("3Goofy")){
-                final Pose2d startPose = new Pose2d(16.00, 2.00, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-            else if(autoChooser.getSelected().toString().equals("Inner Score 2 of Each")){
-                final Pose2d startPose = new Pose2d(16.00, 7.00, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-            else if(autoChooser.getSelected().toString().equals("2p amp 1p speaker")){
-                final Pose2d startPose = new Pose2d(16.00, 6.93, s_Swerve.getYaw());
-                startingPose = startPose;
-            }
-        } 
+        SmartDashboard.putData("Auto Mode", autoChooser);
 
 
     }
@@ -246,7 +213,7 @@ public class RobotContainer {
     );
 
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
-        new Pose2d(1.80, 7.60, Rotation2d.fromDegrees(-90)), 
+        new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
         new PathConstraints(
           4.0, 4.0, 
           Units.degreesToRadians(360), Units.degreesToRadians(540)
@@ -297,8 +264,5 @@ public class RobotContainer {
         return autoChooser.getSelected();
       } 
  
-      public void setStartingPose() {
-        s_Swerve.resetPose(startingPose);
-        s_Swerve.resetOdometry(startingPose);
-    } 
+
 }

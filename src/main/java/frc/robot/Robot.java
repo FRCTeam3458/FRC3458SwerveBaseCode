@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     
   
-    m_robotContainer.setStartingPose();
+   // m_robotContainer.setStartingPose();
 
     
     // schedule the autonomous command (example)
