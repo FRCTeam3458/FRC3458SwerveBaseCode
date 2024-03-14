@@ -121,16 +121,17 @@ public class RobotContainer {
         configureButtonBindings();
 
         
-       // NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
-       // NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
-       // NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
+       NamedCommands.registerCommand("scoreSpeaker", s_Rollers.Shoot().withTimeout(1));
+       NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand().withTimeout(1));
+       NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand().withTimeout(1));
        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand().withTimeout(1));
        NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(0.5));
        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().withTimeout(1));
-       NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().withTimeout(1));
-       NamedCommands.registerCommand("intake", s_Rollers.IntakeCommand().withTimeout(1));
-
-        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
+       //NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().withTimeout(1));
+       NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().alongWith(s_Rollers.IntakeCommand()).withTimeout(1));
+       NamedCommands.registerCommand("runFlywheels", s_Flywheels.RunFlywheels().withTimeout(2));
+        
+       autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
 
 

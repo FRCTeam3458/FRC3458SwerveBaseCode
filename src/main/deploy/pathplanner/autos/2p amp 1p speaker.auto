@@ -32,13 +32,19 @@
         {
           "type": "named",
           "data": {
-            "name": "armToIntakePose"
+            "name": "armFloat"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "score 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -68,13 +74,19 @@
         {
           "type": "named",
           "data": {
-            "name": "armToIntakePose"
+            "name": "armFloat"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "score 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -93,6 +105,12 @@
           "type": "path",
           "data": {
             "pathName": "score 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runFlywheels"
           }
         },
         {
