@@ -122,15 +122,13 @@ public class RobotContainer {
 
         
        // NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
-       // NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Flywheels.StopFlywheels()));
-       
-       // NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(1));
-       // NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(0.7)).andThen(s_Arm.StopArm()));
        // NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
        // NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand().withTimeout(1));
        NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(0.5));
        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().withTimeout(1));
+       NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().withTimeout(1));
+       NamedCommands.registerCommand("intake", s_Rollers.IntakeCommand().withTimeout(1));
 
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -187,6 +185,7 @@ public class RobotContainer {
         )
     ); 
 
+    if(ally.get() == Alliance.Blue){
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
         new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
         new PathConstraints(
@@ -205,7 +204,27 @@ public class RobotContainer {
         ), 
         0, 
         2.0
-      )); 
+      )); }
+      else if(ally.get() == Alliance.Red){
+        pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
+            new Pose2d(14.70, 7.60, Rotation2d.fromDegrees(-90)), 
+            new PathConstraints(
+              4.0, 4.0, 
+              Units.degreesToRadians(360), Units.degreesToRadians(540)
+            ), 
+            0, 
+            2.0
+          ));
+    
+        speakerAlign.whileTrue(AutoBuilder.pathfindToPose(
+            new Pose2d(15.15, 5.60, Rotation2d.fromDegrees(180)), 
+            new PathConstraints(
+              4.0, 4.0, 
+              Units.degreesToRadians(360), Units.degreesToRadians(540)
+            ), 
+            0, 
+            2.0
+          )); }
 
         noteAlign.whileTrue(s_Flywheels.IntakeCommand());
        // noteAlign.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote).alongWith(s_Arm.armFloatingCommand()));
