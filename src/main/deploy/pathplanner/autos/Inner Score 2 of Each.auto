@@ -32,13 +32,19 @@
         {
           "type": "named",
           "data": {
-            "name": "armToIntakePose"
+            "name": "armFloat"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Inner Grab 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -68,13 +74,19 @@
         {
           "type": "named",
           "data": {
-            "name": "armToIntakePose"
+            "name": "armFloat"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Inner Score & Intake 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -87,6 +99,12 @@
           "type": "named",
           "data": {
             "name": "raiseArmToSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runFlywheels"
           }
         },
         {
@@ -104,13 +122,19 @@
         {
           "type": "named",
           "data": {
-            "name": "armToIntakePose"
+            "name": "armFloat"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Inner Grab 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "armToIntakePose"
           }
         },
         {
@@ -123,6 +147,12 @@
           "type": "named",
           "data": {
             "name": "raiseArmToSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "runFlywheels"
           }
         },
         {
