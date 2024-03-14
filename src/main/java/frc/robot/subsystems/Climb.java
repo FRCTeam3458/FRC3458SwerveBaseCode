@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Climb extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
@@ -29,6 +30,9 @@ public Command Extend() {
   public Command StopClimb() {
     return runOnce(() -> climb.set(VictorSPXControlMode.PercentOutput, 0))
     .withName("Stop Climb");
+  }
+  public Command ClimbToMax() {
+    return run(()-> Extend()).alongWith(new WaitCommand(6).andThen(StopClimb())).withName("Climb to Max");
   }
 
 /*   @Override

@@ -66,8 +66,8 @@ public class RobotContainer {
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
     private final JoystickButton noteAlign = new JoystickButton(driver, 2);
-    private final JoystickButton speakerAlign = new JoystickButton(driver, 3);
-    private final JoystickButton pathToAmp = new JoystickButton(driver, 4);
+    private final JoystickButton speakerAlign = new JoystickButton(driver, 4);
+    private final JoystickButton pathToAmp = new JoystickButton(driver, 3);
 
     private final POVButton povUp = new POVButton(operator, 0);
     private final POVButton povDown = new POVButton(operator, 180);
@@ -153,7 +153,7 @@ public class RobotContainer {
         povUp.whileTrue(s_Climb.Extend());
         povDown.whileTrue(s_Climb.Retract());
 
-       // climbRaise.onTrue(s_Climb.Extend().alongWith((new WaitCommand(6)).andThen(s_Climb.StopClimb())));
+       climbRaise.onTrue(s_Climb.ClimbToMax());
 
         intakePOS.whileTrue(s_Arm.armToIntakeCommand1());
         intakePOS.onFalse(s_Arm.StopArm()); 
