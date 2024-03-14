@@ -123,11 +123,14 @@ public class RobotContainer {
         
        // NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
        // NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Flywheels.StopFlywheels()));
-       // NamedCommands.registerCommand("raiseArmToAmp", new SequentialCommandGroup( s_Arm.armToAmpCommand().alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm()))));
+       
        // NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(1));
        // NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(0.7)).andThen(s_Arm.StopArm()));
        // NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
        // NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
+       NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand().withTimeout(1));
+       NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(0.5));
+       NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().withTimeout(1));
 
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);

@@ -38,7 +38,7 @@ public class Arm extends SubsystemBase {
  
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87)))
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87)))//.withTimeout(0.5)
           .withName("Arm to Amp");
         }
     
