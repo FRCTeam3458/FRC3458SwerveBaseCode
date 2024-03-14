@@ -31,9 +31,6 @@ public Command Extend() {
     return runOnce(() -> climb.set(VictorSPXControlMode.PercentOutput, 0))
     .withName("Stop Climb");
   }
-  public Command ClimbToMax() {
-    return run(()-> Extend()).alongWith(new WaitCommand(6).andThen(StopClimb())).withName("Climb to Max");
-  }
 
 /*   @Override
   public void periodic() {

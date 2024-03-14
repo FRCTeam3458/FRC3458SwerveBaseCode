@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -127,8 +128,8 @@ public class RobotContainer {
        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand().withTimeout(1));
        NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(0.5));
        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().withTimeout(1));
-       //NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().withTimeout(1));
-       NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().alongWith(s_Rollers.IntakeCommand()).withTimeout(1));
+       NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().withTimeout(1));
+       NamedCommands.registerCommand("intake", s_Rollers.IntakeCommand().withTimeout(1));
        NamedCommands.registerCommand("runFlywheels", s_Flywheels.RunFlywheels().withTimeout(2));
         
        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
@@ -152,9 +153,9 @@ public class RobotContainer {
        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
       
         povUp.whileTrue(s_Climb.Extend());
-        povDown.whileTrue(s_Climb.Retract());
+        povDown.onTrue(s_Climb.Retract());
 
-       climbRaise.onTrue(s_Climb.ClimbToMax());
+       climbRaise.onTrue(new ParallelRaceGroup(s_Climb.Extend().alongWith(new WaitCommand(6))));
 
         intakePOS.whileTrue(s_Arm.armToIntakeCommand1());
         intakePOS.onFalse(s_Arm.StopArm()); 
@@ -186,7 +187,7 @@ public class RobotContainer {
         )
     ); 
 
-    if(ally.get() == Alliance.Blue){
+ /* */   if(ally.get() == Alliance.Blue){
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
         new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
         new PathConstraints(
