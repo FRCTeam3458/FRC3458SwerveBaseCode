@@ -28,9 +28,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.ScoreAmp;
-import frc.robot.commands.ScoreSpeaker;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
@@ -64,6 +61,7 @@ public class RobotContainer {
     private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
     private final JoystickButton ampScore = new JoystickButton(operator, 2);
     private final JoystickButton intake = new JoystickButton(operator, 5);
+    private final JoystickButton climbRaise = new JoystickButton(operator, 3);
 
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
@@ -107,7 +105,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> driver.getRawAxis(2), 
+                () -> -driver.getRawAxis(2), 
                 () -> false
             )
         ); 
@@ -123,13 +121,13 @@ public class RobotContainer {
         configureButtonBindings();
 
         
-        NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
-        NamedCommands.registerCommand("intake", new IntakeCommand(s_Flywheels, s_Swerve, s_Rollers));
-        NamedCommands.registerCommand("raiseArmToAmp", s_Arm.armToAmpCommand());
-        NamedCommands.registerCommand("scoreAmp", new ScoreAmp(s_Arm, s_Rollers).withTimeout(1));
-        NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(0.7)).andThen(s_Arm.StopArm()));
-        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
-        NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
+       // NamedCommands.registerCommand("scoreSpeaker", new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers).withTimeout(1));
+       // NamedCommands.registerCommand("intake", s_Flywheels.IntakeCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Flywheels.StopFlywheels()));
+       // NamedCommands.registerCommand("raiseArmToAmp", new SequentialCommandGroup( s_Arm.armToAmpCommand().alongWith(new WaitCommand(0.8).andThen(s_Arm.StopArm()))));
+       // NamedCommands.registerCommand("scoreAmp", s_Rollers.ScoreAmp().withTimeout(1));
+       // NamedCommands.registerCommand("armToIntakePose", s_Arm.armToIntakeCommand1().alongWith(new WaitCommand(0.7)).andThen(s_Arm.StopArm()));
+       // NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand());
+       // NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand());
 
         autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -148,41 +146,15 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
 
         /* Operator Buttons */
-
-        //runFlywheel.whileTrue(new SequentialCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
-       // runFlywheel.onFalse(new SequentialCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot().withTimeout(1)))));
-        
-       
-       runFlywheel.whileTrue(new ScoreSpeaker(s_Arm, s_Flywheels, s_Rollers));
-       ampScore.whileTrue(new ScoreAmp(s_Arm, s_Rollers));
-
-
-       //ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
+       ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
+       runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
       
-      
-       // ampScore.whileTrue(s_Arm.armToAmpCommand());
-      // ampScore.onFalse((s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()).alongWith(new WaitCommand(1)).andThen(s_Rollers.StopDouble())));
-       
-
-      //****  runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
-      
-
-       /*   runFlywheel.whileTrue(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels())));
-        /* Shoots the note and then stops all things 
-        runFlywheel.onFalse(new ParallelCommandGroup((s_Arm.armToSpeakerCommand()).alongWith(s_Flywheels.RunFlywheels().alongWith(s_Rollers.Shoot()
-            .alongWith(new WaitCommand(0.7).andThen(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels().alongWith(s_Arm.StopArm()))))))));
-
-
-        ampScore.whileTrue(s_Arm.armToAmpCommand());
-        ampScore.onFalse(new ParallelCommandGroup(s_Arm.armToAmpCommand().alongWith(s_Rollers.IntakeCommand()
-            .alongWith(new WaitCommand(1).andThen(s_Rollers.StopDouble().alongWith(s_Arm.StopArm()))))));
-*/
         povUp.whileTrue(s_Climb.Extend());
-       
-
         povDown.whileTrue(s_Climb.Retract());
 
-        intakePOS.whileTrue(new SequentialCommandGroup(s_Arm.armToIntakeCommand1()));
+       // climbRaise.onTrue(s_Climb.Extend().alongWith((new WaitCommand(6)).andThen(s_Climb.StopClimb())));
+
+        intakePOS.whileTrue(s_Arm.armToIntakeCommand1());
         intakePOS.onFalse(s_Arm.StopArm()); 
 
      /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
@@ -192,25 +164,25 @@ public class RobotContainer {
         () -> false
         )); */
 
-  /*       if(noteAlign.getAsBoolean()){
+         if(noteAlign.getAsBoolean()){
             LimelightHelpers.setPipelineIndex("limelight", 1);}
         else{
-            LimelightHelpers.setPipelineIndex("limelilght", 0);} */
+            LimelightHelpers.setPipelineIndex("limelilght", 0);} 
     
-    /*     if(s_Flywheels.getSensor()){
-                driveForwardVal = -0.2;
+         if(s_Flywheels.getSensor()){
+                driveForwardVal = 0.2;
             }
         else if(!s_Flywheels.getSensor()) {
-            driveForwardVal = 0.0;
-        }   */
+            driveForwardVal = 0;
+        }   
 
- /*    noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
+     noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driveForwardVal, 
-        () -> driver.getRawAxis(strafeAxis), 
-        () -> noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
+        () -> -noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
+        () -> 0, 
         () -> true
         )
-    ); */
+    ); 
 
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
         new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
@@ -232,17 +204,18 @@ public class RobotContainer {
         2.0
       )); 
 
-    //    noteAlign.whileTrue(s_Flywheels.IntakeCommand());
-    //    noteAlign.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().alongWith(s_Arm.armFloatingCommand())));
-
-   noteAlign.whileTrue(new IntakeCommand(s_Flywheels, s_Swerve, s_Rollers));
+        noteAlign.whileTrue(s_Flywheels.IntakeCommand());
+       // noteAlign.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote).alongWith(s_Arm.armFloatingCommand()));
+       // noteAlign.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand()));
+    //noteAlign.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+   // s_Flywheels.hasNote.and(noteAlign).whileTrue(s_Rollers.IntakeCommand());
+   intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));
 
     }
-
    //public class DriveSubsystem extends SubsystemBase {
   //public DriveSubsystem() {
     // All other subsystem initialization
-    // ...
+    // ..
 
     // Configure AutoBuilder last
     
