@@ -63,6 +63,7 @@ public class RobotContainer {
     private final JoystickButton ampScore = new JoystickButton(operator, 2);
     private final JoystickButton intake = new JoystickButton(operator, 5);
     private final JoystickButton climbRaise = new JoystickButton(operator, 3);
+    private final JoystickButton backUpIntake = new JoystickButton(operator, 6);
 
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
@@ -153,12 +154,15 @@ public class RobotContainer {
        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
       
         povUp.whileTrue(s_Climb.Extend());
-        povDown.onTrue(s_Climb.Retract());
+        povDown.whileTrue(s_Climb.Retract());
 
        climbRaise.onTrue(new ParallelRaceGroup(s_Climb.Extend().alongWith(new WaitCommand(6))));
 
         intakePOS.whileTrue(s_Arm.armToIntakeCommand1());
         intakePOS.onFalse(s_Arm.StopArm()); 
+
+        backUpIntake.whileTrue(s_Rollers.IntakeCommand());
+        backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
 
      /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
