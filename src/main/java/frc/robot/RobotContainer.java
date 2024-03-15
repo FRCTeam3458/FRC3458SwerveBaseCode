@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.BlueAmpAuton;
+import frc.robot.commands.DriveDistance;
 import frc.robot.commands.RedAmpAuton;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
@@ -234,14 +235,15 @@ public class RobotContainer {
           )); }
 
         noteAlign.whileTrue(s_Flywheels.IntakeCommand());
-       // noteAlign.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote).alongWith(s_Arm.armFloatingCommand()));
-       // noteAlign.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand()));
-    //noteAlign.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
-   // s_Flywheels.hasNote.and(noteAlign).whileTrue(s_Rollers.IntakeCommand());
+      //  backUpIntake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote).alongWith(s_Arm.armFloatingCommand()));
+        //backUpIntake.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand()));
+   // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+    //s_Flywheels.hasNote.and(backUpIntake).whileTrue(s_Rollers.IntakeCommand());
    intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));
 
-   backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+  // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
    backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
+   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand());
 
 
     }
@@ -265,12 +267,14 @@ public class RobotContainer {
 
 
      public Command getAutonomousCommand() {
-        if(ally.get()==Alliance.Red){
+       /*  if(ally.get()==Alliance.Red){
           return new RedAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
         }
         else{
         return new BlueAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
-      } }
+      }*/ 
+    return new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true);
+    }
  
 
 }

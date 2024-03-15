@@ -33,18 +33,19 @@ private Double m_distance;
   @Override
   public void initialize() {
     m_swerve.resetDriveEncoders();
+        new TeleopSwerve(
+                m_swerve, 
+                () -> (driveDistanceController.calculate(m_swerve.encoderValues(), m_distance) * -0.4),
+                () -> 0, 
+                () -> 0, 
+                () -> true
+            );
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new TeleopSwerve(
-                m_swerve, 
-                () -> (driveDistanceController.calculate(m_swerve.encoderValues(), m_distance) * -0.1),
-                () -> 0, 
-                () -> 0, 
-                () -> true
-            );
+
   }
 
   // Called once the command ends or is interrupted.

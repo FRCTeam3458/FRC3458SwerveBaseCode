@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public Arm() {
-    armController.setTolerance(0.03);
+    armController.setTolerance(0.07);
   }
 
   private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
@@ -61,7 +61,7 @@ public class Arm extends SubsystemBase {
               .withName("Arm to Intake 1");
         } 
   public Command StopArm() {
-    return runOnce(() -> armMotor.set(0)).withName("Stop Arm");
+    return run(() -> armMotor.set(0)).withName("Stop Arm");
   }
 
   public Command armToAmpCommandAuto() {

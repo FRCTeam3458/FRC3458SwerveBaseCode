@@ -31,7 +31,7 @@ public class Rollers extends SubsystemBase {
    */
  // public final Trigger hasNote2 = new Trigger(noteSensor2::get);
   public Command IntakeCommand() {
-    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0.7))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0.6))
           .withName("Intake Rollers"); 
   }
   public Command ScoreAmp(){

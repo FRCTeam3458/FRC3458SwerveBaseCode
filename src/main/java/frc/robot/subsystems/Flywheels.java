@@ -50,14 +50,14 @@ public class Flywheels extends SubsystemBase {
             .withName("Stop Flywheels");
   }
   public Boolean getSensor(){
-    return !noteSensor.get();
+    return noteSensor.get();
   }
   
   public Command stopBottomRoller(){
     return runOnce(()->bottomRoller.set(0.0)).withName("Stop");
   }
 public ParallelRaceGroup StopFlywheelsAuto(){
-  return run(()->upperRoller.set(0.0)).raceWith(stopBottomRoller()).raceWith(new WaitCommand(0.03));
+  return run(()->StopFlywheels()).raceWith(new WaitCommand(0.03));
 }
 
   @Override
