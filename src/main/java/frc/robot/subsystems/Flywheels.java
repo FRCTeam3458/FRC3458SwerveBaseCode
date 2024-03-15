@@ -10,7 +10,9 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Flywheels extends SubsystemBase {
@@ -50,7 +52,13 @@ public class Flywheels extends SubsystemBase {
   public Boolean getSensor(){
     return !noteSensor.get();
   }
-
+  
+  public Command stopBottomRoller(){
+    return runOnce(()->bottomRoller.set(0.0)).withName("Stop");
+  }
+public ParallelRaceGroup StopFlywheelsAuto(){
+  return run(()->upperRoller.set(0.0)).raceWith(stopBottomRoller()).raceWith(new WaitCommand(0.03));
+}
 
   @Override
   public void periodic() {
