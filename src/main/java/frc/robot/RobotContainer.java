@@ -29,6 +29,8 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import frc.robot.commands.BlueAmpAuton;
+import frc.robot.commands.RedAmpAuton;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.Rollers;
@@ -87,7 +89,7 @@ public class RobotContainer {
     private double driveForwardVal = -0.2;
 
     /* Autonomous */
-    private final SendableChooser<Command> autoChooser;
+    //private final SendableChooser<Command> autoChooser;
     
     Optional<Alliance> ally = DriverStation.getAlliance();
 
@@ -122,7 +124,7 @@ public class RobotContainer {
         // Configure the button bindings
         configureButtonBindings();
 
-        
+     /*    
        NamedCommands.registerCommand("scoreSpeaker", s_Rollers.Shoot().withTimeout(1));
        NamedCommands.registerCommand("raiseArmToSpeaker", s_Arm.armToSpeakerCommand().withTimeout(1));
        NamedCommands.registerCommand("armFloat", s_Arm.armFloatingCommand().withTimeout(1));
@@ -134,7 +136,7 @@ public class RobotContainer {
        NamedCommands.registerCommand("runFlywheels", s_Flywheels.RunFlywheels().withTimeout(2));
         
        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
-        SmartDashboard.putData("Auto Mode", autoChooser);
+        SmartDashboard.putData("Auto Mode", autoChooser); */
 
 
     }
@@ -161,8 +163,7 @@ public class RobotContainer {
         intakePOS.whileTrue(s_Arm.armToIntakeCommand1());
         intakePOS.onFalse(s_Arm.StopArm()); 
 
-        backUpIntake.whileTrue(s_Rollers.IntakeCommand());
-        backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
+        
 
      /*    speakerAlign.whileTrue(new TeleopSwerve(s_Swerve, 
         () -> driver.getRawAxis(translationAxis), 
@@ -184,14 +185,14 @@ public class RobotContainer {
         }   
 
      noteAlign.whileTrue(new TeleopSwerve(s_Swerve, 
-        () -> driveForwardVal, 
+        () -> -driver.getRawAxis(translationAxis), 
         () -> -noteAlignLR.calculate(LimelightHelpers.getTX("limelight"), 0) * -0.012, 
-        () -> 0, 
+        () -> -driver.getRawAxis(2), 
         () -> true
         )
     ); 
 
- /* */   if(ally.get() == Alliance.Blue){
+   if(ally.get() == Alliance.Blue){
     pathToAmp.whileTrue(AutoBuilder.pathfindToPose(
         new Pose2d(1.90, 7.60, Rotation2d.fromDegrees(-90)), 
         new PathConstraints(
@@ -239,6 +240,10 @@ public class RobotContainer {
    // s_Flywheels.hasNote.and(noteAlign).whileTrue(s_Rollers.IntakeCommand());
    intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));
 
+   backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
+   backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
+
+
     }
    //public class DriveSubsystem extends SubsystemBase {
   //public DriveSubsystem() {
@@ -260,8 +265,12 @@ public class RobotContainer {
 
 
      public Command getAutonomousCommand() {
-        return autoChooser.getSelected();
-      } 
+        if(ally.get()==Alliance.Red){
+          return new RedAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
+        }
+        else{
+        return new BlueAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
+      } }
  
 
 }

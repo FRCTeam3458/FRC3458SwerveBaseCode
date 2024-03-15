@@ -8,7 +8,10 @@ import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 
 
@@ -50,7 +53,12 @@ public class Rollers extends SubsystemBase {
     return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, speed))
             .withName("Set Roller Speed");
   }
-
+  public ParallelRaceGroup ScoreAmpAuto() {
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1)).raceWith(new WaitCommand(1));
+  }
+  public ParallelRaceGroup StopDoubleAuto() {
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0)).raceWith(new WaitCommand(0.02));
+  }
 /*   @Override
   public void periodic() {
     // This method will be called once per scheduler run

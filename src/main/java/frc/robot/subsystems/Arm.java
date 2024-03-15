@@ -12,11 +12,15 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class Arm extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public Arm() {}
+  public Arm() {
+    armController.setTolerance(0.03);
+  }
 
   private final CANSparkMax armMotor = new CANSparkMax(13, MotorType.kBrushless);
 
@@ -24,6 +28,7 @@ public class Arm extends SubsystemBase {
   private final PIDController armController = new PIDController(3, 0.0, 0.03);
   private final PIDController armController2 = new PIDController(1, 0, 0.06);
 
+  
   
   /**
    * Example command factory method.
@@ -38,7 +43,7 @@ public class Arm extends SubsystemBase {
  
   public Command armToAmpCommand() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87)))//.withTimeout(0.5)
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87)))
           .withName("Arm to Amp");
         }
     
@@ -56,8 +61,28 @@ public class Arm extends SubsystemBase {
               .withName("Arm to Intake 1");
         } 
   public Command StopArm() {
-    return run(() -> armMotor.set(0)).withName("Stop Arm");
+    return runOnce(() -> armMotor.set(0)).withName("Stop Arm");
   }
+
+  public Command armToAmpCommandAuto() {
+    return run(() -> 
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87))).until(()->armController.atSetpoint())
+          .withName("Arm to Amp");
+        }
+ public Command armFloatingCommandAuto() {
+          return run(()->
+          armMotor.set(armController.calculate(armEncoder.getPosition(), -0.6))).until(()->armController.atSetpoint())
+          .withName("Float Arm");
+        }
+  public Command armToIntakeCommandAuto() {
+          return run(()->
+          armMotor.set(armController.calculate(armEncoder.getPosition(), -0.12))).until(()->armController.atSetpoint())
+          .withName("Float Arm");
+        }
+    public ParallelRaceGroup stopArmAuto() {
+      return run(()->
+        armMotor.set(0.0)).raceWith(new WaitCommand(0.02));
+    }
 
   @Override
   public void periodic() {
