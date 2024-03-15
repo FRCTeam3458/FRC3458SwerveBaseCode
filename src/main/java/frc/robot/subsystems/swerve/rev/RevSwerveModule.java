@@ -35,7 +35,7 @@ public class RevSwerveModule implements SwerveModule
 
     private CANcoder angleEncoder;
     private RelativeEncoder relAngleEncoder;
-    private RelativeEncoder relDriveEncoder;
+    public RelativeEncoder relDriveEncoder;
 
 
 
@@ -231,5 +231,14 @@ public class RevSwerveModule implements SwerveModule
             relDriveEncoder.getPosition(), 
             getAngle()
         );
+    }
+
+    public Double swerveDistance()
+    {
+        return relDriveEncoder.getPosition();
+    }
+
+    public void resetDriveEncoders(){
+        relDriveEncoder.setPosition(0.0);
     }
 }

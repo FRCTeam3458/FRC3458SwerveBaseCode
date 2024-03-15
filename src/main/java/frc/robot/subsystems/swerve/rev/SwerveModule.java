@@ -9,6 +9,8 @@ public interface SwerveModule
  {
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop);
 
+    public void resetDriveEncoders();
+
     public Rotation2d getCanCoder();
 
     public SwerveModuleState getState();
@@ -18,5 +20,7 @@ public interface SwerveModule
     public int getModuleNumber(); 
 
     public void setModuleNumber(int moduleNumber);
+
+    public Double swerveDistance();
 
 }

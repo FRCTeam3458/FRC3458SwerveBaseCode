@@ -39,6 +39,7 @@ public class RevSwerve extends SubsystemBase {
     public AHRS gyro;
     public SwerveDriveKinematics kinematics;
     private final Field2d m_field = new Field2d();
+    private double distance;
     Optional<Alliance> ally = DriverStation.getAlliance();
     //public AutoBuilder autonomous;
 
@@ -214,6 +215,18 @@ public class RevSwerve extends SubsystemBase {
     public SwerveDrivePoseEstimator resetPose(Pose2d pose) {
         botPose.resetPosition(getYaw(), getModulePositions(), pose);
         return botPose;
+    }
+    public Double encoderValues() {
+        distance = 0;
+        for (SwerveModule mod : mSwerveMods){
+            distance += mod.swerveDistance();
+        }
+        return distance/4;
+    }
+    public void resetDriveEncoders() {
+        for (SwerveModule mod : mSwerveMods){
+            mod.resetDriveEncoders();;
+        }
     }
     
     @Override
