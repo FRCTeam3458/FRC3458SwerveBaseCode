@@ -35,7 +35,7 @@ private Double m_distance;
     m_swerve.resetDriveEncoders();
         new TeleopSwerve(
                 m_swerve, 
-                () -> (driveDistanceController.calculate(m_swerve.encoderValues(), m_distance) * -0.4),
+                () -> m_distance,
                 () -> 0, 
                 () -> 0, 
                 () -> true

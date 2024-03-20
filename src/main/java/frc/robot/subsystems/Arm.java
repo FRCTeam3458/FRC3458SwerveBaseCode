@@ -66,7 +66,7 @@ public class Arm extends SubsystemBase {
 
   public Command armToAmpCommandAuto() {
     return run(() -> 
-      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.87))).until(()->armController.atSetpoint())
+      armMotor.set(armController.calculate(armEncoder.getPosition(), -0.84))).until(()->armController.atSetpoint())
           .withName("Arm to Amp");
         }
  public Command armFloatingCommandAuto() {

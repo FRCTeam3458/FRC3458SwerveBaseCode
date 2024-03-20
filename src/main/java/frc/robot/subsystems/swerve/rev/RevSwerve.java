@@ -237,6 +237,7 @@ public class RevSwerve extends SubsystemBase {
             SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond); 
             SmartDashboard.putNumber("Gyro Yaw", gyro.getYaw());
         }
+        SmartDashboard.putNumber("drive encoders", encoderValues());
 
         updatePose();
         addVisionPose();

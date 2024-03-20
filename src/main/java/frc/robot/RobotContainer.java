@@ -273,7 +273,8 @@ public class RobotContainer {
         else{
         return new BlueAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
       }*/ 
-    return new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true);
+   // return new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true);
+   return new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new TeleopSwerve(s_Swerve, ()->-0.2, ()->0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3)).andThen(s_Rollers.ScoreAmp()));
     }
  
 

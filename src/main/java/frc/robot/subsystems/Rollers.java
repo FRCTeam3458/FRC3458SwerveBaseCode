@@ -35,7 +35,7 @@ public class Rollers extends SubsystemBase {
           .withName("Intake Rollers"); 
   }
   public Command ScoreAmp(){
-    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1))
+    return run(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1))
           .withName("Score Amp");
   }
   public Command Shoot() {
@@ -55,7 +55,7 @@ public class Rollers extends SubsystemBase {
             .withName("Set Roller Speed");
   }
   public ParallelRaceGroup ScoreAmpAuto() {
-    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1)).raceWith(new WaitCommand(1));
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1)).raceWith(new WaitCommand(2));
   }
   public ParallelRaceGroup StopDoubleAuto() {
     return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0)).raceWith(new WaitCommand(0.02));
