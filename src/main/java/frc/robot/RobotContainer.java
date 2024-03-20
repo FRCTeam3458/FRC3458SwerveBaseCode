@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
@@ -80,8 +82,7 @@ public class RobotContainer {
     private final PIDController noteAlignLR = new PIDController(1.2, 0.7, 0.1);
     private double driveForwardVal = -0.2;
 
-    /* Autonomous */
-    //private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
     
     Optional<Alliance> ally = DriverStation.getAlliance();
 
@@ -130,6 +131,23 @@ public class RobotContainer {
        autoChooser = AutoBuilder.buildAutoChooser(); // Default auto will be `Commands.none()`
         SmartDashboard.putData("Auto Mode", autoChooser); */
 
+        final SequentialCommandGroup blue1pAmp = new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new TeleopSwerve(s_Swerve, ()->-0.2, ()->0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3)).andThen(s_Rollers.ScoreAmp()));
+        final SequentialCommandGroup red1pAmp = new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new TeleopSwerve(s_Swerve, ()->-0.2, ()->-0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3)).andThen(s_Rollers.ScoreAmp()));
+        final SequentialCommandGroup mobility = new SequentialCommandGroup(new TeleopSwerve(s_Swerve, ()->0.5, ()->0.0, ()->0.0, ()->true).raceWith(new WaitCommand(3)));
+        
+        final SequentialCommandGroup blue2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
+        .andThen(new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->-0.2, ()->0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3))
+        .andThen(s_Rollers.ScoreAmpAuto()).andThen(
+          new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->0.0, ()->0.50, ()->0.0, ()->true).raceWith(new WaitCommand(0.8))))
+          .andThen(s_Flywheels.IntakeCommand()).andThen(s_Rollers.IntakeCommand()).andThen(new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true)).until(s_Flywheels.hasNote)));
+
+      autoChooser.addOption("1 Piece Amp Blue", blue1pAmp);
+      autoChooser.addOption("1 Piece Amp Red", red1pAmp);
+      autoChooser.addOption("Mobility", mobility);
+      autoChooser.addOption("2 Piece Amp Blue", blue2pamp);
+
+
+      SmartDashboard.putData("Auto Mode", autoChooser); 
 
     }
 
@@ -268,8 +286,8 @@ public class RobotContainer {
         return new BlueAmpAuton(s_Swerve, s_Rollers, s_Flywheels, s_Arm);
       }*/ 
    // return new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true);
-   return new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new TeleopSwerve(s_Swerve, ()->-0.2, ()->0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3)).andThen(s_Rollers.ScoreAmp()));
-    }
+   return autoChooser.getSelected();
+  }
  
 
 }
