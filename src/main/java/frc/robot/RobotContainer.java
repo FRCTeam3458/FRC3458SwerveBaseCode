@@ -141,10 +141,17 @@ public class RobotContainer {
           new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->0.0, ()->0.50, ()->0.0, ()->true).raceWith(new WaitCommand(0.8))))
           .andThen(s_Flywheels.IntakeCommand()).andThen(s_Rollers.IntakeCommand()).andThen(new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true)).until(s_Flywheels.hasNote)));
 
+        final SequentialCommandGroup red2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
+        .andThen(new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->-0.2, ()->-0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3))
+        .andThen(s_Rollers.ScoreAmpAuto()).andThen(
+          new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->0.0, ()->-0.50, ()->0.0, ()->true).raceWith(new WaitCommand(0.8))))
+          .andThen(s_Flywheels.IntakeCommand()).andThen(s_Rollers.IntakeCommand()).andThen(new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true)).until(s_Flywheels.hasNote)));
+
       autoChooser.addOption("1 Piece Amp Blue", blue1pAmp);
       autoChooser.addOption("1 Piece Amp Red", red1pAmp);
       autoChooser.addOption("Mobility", mobility);
       autoChooser.addOption("2 Piece Amp Blue", blue2pamp);
+      autoChooser.addOption("2 Piece Amp Red", red2pamp);
 
 
       SmartDashboard.putData("Auto Mode", autoChooser); 
