@@ -165,8 +165,8 @@ public class RobotContainer {
        ampScore.whileTrue(new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new WaitCommand(1).andThen(s_Rollers.ScoreAmp()))));
        runFlywheel.whileTrue(new SequentialCommandGroup(s_Arm.armToSpeakerCommand().alongWith(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot())))));
        //runFlywheel.onFalse(new SequentialCommandGroup(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot()).andThen(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels())))));
-      runFlywheel.onFalse(new SequentialCommandGroup(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot()))).withTimeout(3));
-      runFlywheel.onFalse(new SequentialCommandGroup(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot()).alongWith(new SequentialCommandGroup(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels()))))));
+      //runFlywheel.onFalse(new SequentialCommandGroup(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot()))).withTimeout(3));
+     //runFlywheel.onFalse(new SequentialCommandGroup(s_Flywheels.RunFlywheels().alongWith(new WaitCommand(1).andThen(s_Rollers.Shoot()).alongWith(new SequentialCommandGroup(s_Rollers.StopDouble().alongWith(s_Flywheels.StopFlywheels()))))));
 
         povUp.whileTrue(s_Climb.Extend());
         povDown.whileTrue(s_Climb.Retract());
@@ -251,11 +251,13 @@ public class RobotContainer {
         //backUpIntake.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand()));
    // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
     //s_Flywheels.hasNote.and(backUpIntake).whileTrue(s_Rollers.IntakeCommand());
-   intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));
+   intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));   
 
   // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
    backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
-   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand());
+// Original Code   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand());
+ s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(()->!intake.getAsBoolean()));  //test code
+ // More test code   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(runFlywheel));
 
 
     }
