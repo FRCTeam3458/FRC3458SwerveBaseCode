@@ -4,10 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -20,10 +22,9 @@ public class Rollers extends SubsystemBase {
 
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
-   //private final VictorSPX doubleRoller = new VictorSPX(16);
-      private final CANSparkMax doubleRoller = new CANSparkMax(9, MotorType.kBrushless);
+   private final VictorSPX doubleRoller = new VictorSPX(16);
 
-
+   
   /**
    * Example command factory method.
    *
@@ -31,34 +32,34 @@ public class Rollers extends SubsystemBase {
    */
  // public final Trigger hasNote2 = new Trigger(noteSensor2::get);
   public Command IntakeCommand() {
-    return run(() -> doubleRoller.set(0.6))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, -0.6))
           .withName("Intake Rollers"); 
   }
   public Command ScoreAmp(){
-    return run(()-> doubleRoller.set(1))
+    return run(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, -1))
           .withName("Score Amp");
   }
   public Command Shoot() {
-    return run(() -> doubleRoller.set(-1))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 1))
             .withName("Shoot");
   }
   public Command alignNote() {
-    return runOnce(() -> doubleRoller.set(0.5))
+    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, -0.5))
             .withName("Align Note");
   }
   public Command StopDouble() {
-    return run(() -> doubleRoller.set(0))
+    return run(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0))
             .withName("Stop Double Rollers");
   }
   public Command setRollerSpeed(double speed) {
-    return runOnce(() -> doubleRoller.set(speed))
+    return runOnce(() -> doubleRoller.set(VictorSPXControlMode.PercentOutput, speed))
             .withName("Set Roller Speed");
   }
   public ParallelRaceGroup ScoreAmpAuto() {
-    return runOnce(()-> doubleRoller.set(1)).raceWith(new WaitCommand(2));
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, -1)).raceWith(new WaitCommand(2));
   }
   public ParallelRaceGroup StopDoubleAuto() {
-    return runOnce(()-> doubleRoller.set(0)).raceWith(new WaitCommand(0.02));
+    return runOnce(()-> doubleRoller.set(VictorSPXControlMode.PercentOutput, 0)).raceWith(new WaitCommand(0.02));
   }
 /*   @Override
   public void periodic() {

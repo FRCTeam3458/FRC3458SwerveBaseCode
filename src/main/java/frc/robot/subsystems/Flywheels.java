@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class Flywheels extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   //public OuterIntake() {}
+   private final CANSparkMax bottomRoller = new CANSparkMax(9, MotorType.kBrushless);
    private final CANSparkMax upperRoller = new CANSparkMax(10, MotorType.kBrushless);
 
    private final DigitalInput noteSensor = new DigitalInput(0);
@@ -34,19 +35,26 @@ public class Flywheels extends SubsystemBase {
 
   public Command IntakeCommand() {
     return runOnce(() -> upperRoller.set(-0.7))
+          .andThen(run(() -> bottomRoller.set(-0.7)))
           .withName("Intake Flywheels"); 
   }
 
   public Command RunFlywheels() {
     return runOnce(() -> upperRoller.set(1))
+            .andThen(run(() -> bottomRoller.set(1)))
             .withName("Run Flywheel");
   }
   public Command StopFlywheels() {
     return runOnce(() -> upperRoller.set(0.0))
+            .andThen(() -> bottomRoller.set(0.0))
             .withName("Stop Flywheels");
   }
   public Boolean getSensor(){
-    return noteSensor.get();
+    return !noteSensor.get();
+  }
+  
+  public Command stopBottomRoller(){
+    return runOnce(()->bottomRoller.set(0.0)).withName("Stop");
   }
 public ParallelRaceGroup StopFlywheelsAuto(){
   return run(()->StopFlywheels()).raceWith(new WaitCommand(0.03));

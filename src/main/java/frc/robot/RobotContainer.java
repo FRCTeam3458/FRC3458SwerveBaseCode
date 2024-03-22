@@ -57,9 +57,9 @@ public class RobotContainer {
     private final JoystickButton intakePOS = new JoystickButton(operator, 1);
     private final JoystickButton runFlywheel = new JoystickButton(operator, 4);
     private final JoystickButton ampScore = new JoystickButton(operator, 2);
-    private final JoystickButton intake = new JoystickButton(operator, 5);
+    private final JoystickButton intake = new JoystickButton(operator, 6);
     private final JoystickButton climbRaise = new JoystickButton(operator, 3);
-    private final JoystickButton backUpIntake = new JoystickButton(operator, 6);
+    private final JoystickButton backUpIntake = new JoystickButton(operator, 5);
 
 
     private final JoystickButton temp1 = new JoystickButton(driver, 1);
@@ -135,23 +135,24 @@ public class RobotContainer {
         final SequentialCommandGroup red1pAmp = new SequentialCommandGroup(s_Arm.armToAmpCommand().alongWith(new TeleopSwerve(s_Swerve, ()->-0.2, ()->-0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3)).andThen(s_Rollers.ScoreAmp()));
         final SequentialCommandGroup mobility = new SequentialCommandGroup(new TeleopSwerve(s_Swerve, ()->0.5, ()->0.0, ()->0.0, ()->true).raceWith(new WaitCommand(3)));
         
-        final SequentialCommandGroup blue2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
+/*         final SequentialCommandGroup blue2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
         .andThen(new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->-0.2, ()->0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3))
         .andThen(s_Rollers.ScoreAmpAuto()).andThen(
           new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->0.0, ()->0.50, ()->0.0, ()->true).raceWith(new WaitCommand(0.8))))
           .andThen(s_Flywheels.IntakeCommand()).andThen(s_Rollers.IntakeCommand()).andThen(new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true)).until(s_Flywheels.hasNote)));
 
-        final SequentialCommandGroup red2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
+ /*
+         final SequentialCommandGroup red2pamp = new SequentialCommandGroup(s_Arm.armToAmpCommandAuto()
         .andThen(new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->-0.2, ()->-0.17, ()->0.0, ()->true)).raceWith(new WaitCommand(3))
         .andThen(s_Rollers.ScoreAmpAuto()).andThen(
           new ParallelRaceGroup(new TeleopSwerve(s_Swerve, ()->0.0, ()->-0.50, ()->0.0, ()->true).raceWith(new WaitCommand(0.8))))
           .andThen(s_Flywheels.IntakeCommand()).andThen(s_Rollers.IntakeCommand()).andThen(new TeleopSwerve(s_Swerve, ()->0.2, ()->0.0, ()->0.0, ()->true)).until(s_Flywheels.hasNote)));
-
+*/
       autoChooser.addOption("1 Piece Amp Blue", blue1pAmp);
       autoChooser.addOption("1 Piece Amp Red", red1pAmp);
       autoChooser.addOption("Mobility", mobility);
-      autoChooser.addOption("2 Piece Amp Blue", blue2pamp);
-      autoChooser.addOption("2 Piece Amp Red", red2pamp);
+    //  autoChooser.addOption("2 Piece Amp Blue", blue2pamp);
+    //  autoChooser.addOption("2 Piece Amp Red", red2pamp);
 
 
       SmartDashboard.putData("Auto Mode", autoChooser); 
@@ -258,14 +259,17 @@ public class RobotContainer {
         //backUpIntake.and(s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand()));
    // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
     //s_Flywheels.hasNote.and(backUpIntake).whileTrue(s_Rollers.IntakeCommand());
-   intake.whileTrue(s_Rollers.IntakeCommand().until(s_Flywheels.hasNote));   
+
 
   // backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
    backUpIntake.whileTrue(s_Flywheels.IntakeCommand());
-// Original Code   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand());
- s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(()->!intake.getAsBoolean()));  //test code
- // More test code   s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(runFlywheel));
+ // s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand());
+ //s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(()->backUpIntake.getAsBoolean()==false));  //test code
+   // s_Flywheels.hasNote.whileFalse(s_Rollers.IntakeCommand().unless(runFlywheel));
+ //s_Flywheels.hasNote.and(backUpIntake).whileTrue(s_Rollers.IntakeCommand());
+        //backUpIntake.and(s_Flywheels.hasNote).whileTrue(s_Rollers.IntakeCommand());
 
+  
 
     }
    //public class DriveSubsystem extends SubsystemBase {
