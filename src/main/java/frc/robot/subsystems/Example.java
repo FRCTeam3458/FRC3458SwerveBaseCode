@@ -9,30 +9,20 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class Climb extends SubsystemBase {
+
+public class Example extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public Climb() {}
+  public Example() {}
 
-  private final VictorSPX climb = new VictorSPX(8);
+  private final VictorSPX example = new VictorSPX(8);
 
-public Command Extend() {
-    return run(() -> climb.set(VictorSPXControlMode.PercentOutput, 1))
-    .withName("Extend");
+public Command Example() {
+    return run(() -> example.set(VictorSPXControlMode.PercentOutput, 1))
+    .withName("Example");
   }
 
-  public Command Retract() {
-    return run(() -> climb.set(VictorSPXControlMode.PercentOutput, -1))
-    .withName("Retract");
-  }
-
-  public Command StopClimb() {
-    return runOnce(() -> climb.set(VictorSPXControlMode.PercentOutput, 0))
-    .withName("Stop Climb");
-  }
-
-/*   @Override
+ @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
@@ -40,5 +30,5 @@ public Command Extend() {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
-  }*/
+  }
 }
